@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row mb-4 mt-3">
+    <div class="col-8">
+        <h2 class="border-bottom pb-2">Company Dashboard - {{ current_user.company_profile.company_name }}</h2>
+    </div>
+    <div class="col-4 text-end align-self-end">
+        <a href="{{ url_for('new_drive') }}" class="btn btn-primary">Post New Drive</a>
+    </div>
+</div>
+
+<div class="table-responsive bg-white rounded shadow-sm p-3">
+    <h4>Your Placement Drives</h4>
+    <hr>
+    <table class="table table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>Job Title</th>
+                <th>Deadline</th>
+                <th>Created At</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for drive in drives %}
+            <tr>
+                <td>{{ drive.job_title }}</td>
+                <td>{{ drive.deadline.strftime('%Y-%m-%d') }}</td>
+                <td>{{ drive.created_at.strftime('%Y-%m-%d') }}</td>
+                <td>
+                    {% if drive.status == 'Approved' %}
+                    <span class="badge bg-success">Approved</span>
+                    {% elif drive.status == 'Closed' %}
+                    <span class="badge bg-secondary">Closed</span>
+                    {% else %}
+                    <span class="badge bg-warning text-dark">Pending</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ url_for('view_applicants', id=drive.id) }}" class="btn btn-sm btn-info text-white">View
+                        Applicants</a>
+                    {% if drive.status != 'Closed' %}
+                    <a href="{{ url_for('close_drive', id=drive.id) }}" class="btn btn-sm btn-danger"
+                        onclick="return confirm('Are you sure you want to close this drive?');">Close</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="5" class="text-center">You haven't posted any drives yet.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

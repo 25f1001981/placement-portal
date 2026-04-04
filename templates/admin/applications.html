@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row mb-3 mt-3">
+    <div class="col-12">
+        <h2>All Applications</h2>
+    </div>
+</div>
+
+<div class="table-responsive bg-white rounded shadow-sm p-3">
+    <table class="table table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>Student Name</th>
+                <th>Company</th>
+                <th>Job Title</th>
+                <th>Applied On</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for app in applications.items %}
+            <tr>
+                <td>{{ app.student.user.name }}</td>
+                <td>{{ app.drive.company.company_name }}</td>
+                <td>{{ app.drive.job_title }}</td>
+                <td>{{ app.applied_on.strftime('%Y-%m-%d %H:%M') }}</td>
+                <td>
+                    {% if app.status == 'Applied' %}
+                    <span class="badge bg-info text-dark">Applied</span>
+                    {% elif app.status == 'Shortlisted' %}
+                    <span class="badge bg-warning text-dark">Shortlisted</span>
+                    {% elif app.status == 'Selected' %}
+                    <span class="badge bg-success">Selected</span>
+                    {% else %}
+                    <span class="badge bg-danger">Rejected</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="5" class="text-center">No applications found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Basic Pagination -->
+    {% if applications.has_prev or applications.has_next %}
+    <nav class="mt-4">
+        <ul class="pagination justify-content-center">
+            <li class="page-item {% if not applications.has_prev %}disabled{% endif %}">
+                <a class="page-link" href="{{ url_for('admin_applications', page=applications.prev_num) }}">Previous</a>
+            </li>
+            <li class="page-item {% if not applications.has_next %}disabled{% endif %}">
+                <a class="page-link" href="{{ url_for('admin_applications', page=applications.next_num) }}">Next</a>
+            </li>
+        </ul>
+    </nav>
+    {% endif %}
+</div>
+{% endblock %}

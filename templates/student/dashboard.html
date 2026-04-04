@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row mb-4 mt-3">
+    <div class="col-8">
+        <h2 class="border-bottom pb-2">Student Dashboard - {{ current_user.name }}</h2>
+        <p class="text-muted">Department: {{ current_user.student_profile.department }} | CGPA: {{
+            current_user.student_profile.cgpa }}</p>
+    </div>
+    <div class="col-4 text-end align-self-center">
+        <a href="{{ url_for('student_drives') }}" class="btn btn-primary">Browse All Drives</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-7 mb-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Recent Upcoming Drives</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="list-group list-group-flush">
+                    {% for drive in recent_drives %}
+                    <a href="{{ url_for('student_drives') }}" class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1 fw-bold">{{ drive.job_title }}</h6>
+                            <small class="text-muted">Deadline: {{ drive.deadline.strftime('%Y-%m-%d') }}</small>
+                        </div>
+                        <p class="mb-1">{{ drive.company.company_name }}</p>
+                    </a>
+                    {% else %}
+                    <div class="p-4 text-center text-muted">No upcoming drives available at the moment.</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-5 mb-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">My Applications Status</h5>
+            </div>
+            <div class="card-body p-0">
+                <ul class="list-group list-group-flush">
+                    {% for app in applications[:5] %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>{{ app.drive.company.company_name }}</strong><br>
+                            <small class="text-muted">{{ app.drive.job_title }}</small>
+                        </div>
+                        {% if app.status == 'Applied' %}
+                        <span class="badge bg-info rounded-pill">Applied</span>
+                        {% elif app.status == 'Shortlisted' %}
+                        <span class="badge bg-warning rounded-pill">Shortlisted</span>
+                        {% elif app.status == 'Selected' %}
+                        <span class="badge bg-success rounded-pill">Selected</span>
+                        {% else %}
+                        <span class="badge bg-danger rounded-pill">Rejected</span>
+                        {% endif %}
+                    </li>
+                    {% else %}
+                    <li class="list-group-item p-4 text-center text-muted">You haven't applied to any drives yet.</li>
+                    {% endfor %}
+                </ul>
+                {% if applications|length > 5 %}
+                <div class="card-footer text-center bg-white">
+                    <a href="{{ url_for('student_applications') }}" class="btn btn-sm btn-link">View All</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

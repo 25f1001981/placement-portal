@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row mb-3 mt-3">
+    <div class="col-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('company_dashboard') }}">Company Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Applicants</li>
+            </ol>
+        </nav>
+        <h2>Applicants for: {{ drive.job_title }}</h2>
+        <p class="text-muted">Deadline: {{ drive.deadline.strftime('%Y-%m-%d') }} | Status: {{ drive.status }}</p>
+    </div>
+</div>
+
+<div class="table-responsive bg-white rounded shadow-sm p-3">
+    <table class="table table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>Student Name</th>
+                <th>Department</th>
+                <th>CGPA</th>
+                <th>Phone</th>
+                <th>Applied On</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for app in applications %}
+            <tr>
+                <td>{{ app.student.user.name }}</td>
+                <td>{{ app.student.department }}</td>
+                <td>{{ app.student.cgpa }}</td>
+                <td>{{ app.student.phone }}</td>
+                <td>{{ app.applied_on.strftime('%Y-%m-%d') }}</td>
+                <td>
+                    {% if app.status == 'Applied' %}
+                    <span class="badge bg-info text-dark">Applied</span>
+                    {% elif app.status == 'Shortlisted' %}
+                    <span class="badge bg-warning text-dark">Shortlisted</span>
+                    {% elif app.status == 'Selected' %}
+                    <span class="badge bg-success">Selected</span>
+                    {% else %}
+                    <span class="badge bg-danger">Rejected</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-secondary dropdown-toggle" type="button"
+                            id="statusDropdown{{ app.id }}" data-bs-toggle="dropdown" aria-expanded="false">
+                            Update Status
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="statusDropdown{{ app.id }}">
+                            <li><a class="dropdown-item"
+                                    href="{{ url_for('update_application_status', id=app.id, status='Shortlisted') }}">Shortlist</a>
+                            </li>
+                            <li><a class="dropdown-item"
+                                    href="{{ url_for('update_application_status', id=app.id, status='Selected') }}">Select</a>
+                            </li>
+                            <li><a class="dropdown-item"
+                                    href="{{ url_for('update_application_status', id=app.id, status='Rejected') }}">Reject</a>
+                            </li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="7" class="text-center">No applicants yet.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

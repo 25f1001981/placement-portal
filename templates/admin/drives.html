@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row mb-3 mt-3">
+    <div class="col-12">
+        <h2>Manage Placement Drives</h2>
+    </div>
+</div>
+
+<div class="table-responsive bg-white rounded shadow-sm p-3">
+    <table class="table table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>Company</th>
+                <th>Job Title</th>
+                <th>Deadline</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for drive in drives %}
+            <tr>
+                <td>{{ drive.company.company_name }}</td>
+                <td>{{ drive.job_title }}</td>
+                <td>{{ drive.deadline.strftime('%Y-%m-%d') }}</td>
+                <td>
+                    {% if drive.status == 'Approved' %}
+                    <span class="badge bg-success">Approved</span>
+                    {% elif drive.status == 'Closed' %}
+                    <span class="badge bg-secondary">Closed</span>
+                    {% else %}
+                    <span class="badge bg-warning text-dark">Pending</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if drive.status == 'Pending' %}
+                    <a href="{{ url_for('admin_drive_action', id=drive.id, action='approve') }}"
+                        class="btn btn-sm btn-success">Approve</a>
+                    <a href="{{ url_for('admin_drive_action', id=drive.id, action='close') }}"
+                        class="btn btn-sm btn-danger">Reject/Close</a>
+                    {% elif drive.status == 'Approved' %}
+                    <a href="{{ url_for('admin_drive_action', id=drive.id, action='close') }}"
+                        class="btn btn-sm btn-warning">Close Drive</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="5" class="text-center">No drives found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row mb-4 mt-3">
+    <div class="col-12">
+        <h2 class="border-bottom pb-2">Active Placement Drives</h2>
+    </div>
+</div>
+
+<div class="row">
+    {% for drive in drives %}
+    <div class="col-md-6 mb-4">
+        <div class="card shadow-sm h-100 border-0 border-start border-primary border-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <h5 class="card-title fw-bold mb-0">{{ drive.job_title }}</h5>
+                    <span class="badge bg-light text-dark border"><i class="bi bi-building"></i> {{
+                        drive.company.company_name }}</span>
+                </div>
+                <h6 class="card-subtitle mb-3 text-muted">Eligibility: {{ drive.eligibility }}</h6>
+                <p class="card-text">{{ drive.job_description[:150] }}{% if drive.job_description|length > 150 %}...{%
+                    endif %}</p>
+                <div class="text-muted small mb-3">
+                    <strong>Deadline:</strong> <span class="text-danger">{{ drive.deadline.strftime('%Y-%m-%d')
+                        }}</span>
+                </div>
+
+                {% if drive.id in applied_drive_ids %}
+                <button class="btn btn-secondary w-100" disabled>Applied</button>
+                {% else %}
+                <a href="{{ url_for('apply_drive', id=drive.id) }}" class="btn btn-primary w-100"
+                    onclick="return confirm('Confirm application for {{ drive.job_title }} at {{ drive.company.company_name }}?');">Apply
+                    Now</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="col-12 text-center mt-5">
+        <h4 class="text-muted">No active placement drives at the moment. Check back later!</h4>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

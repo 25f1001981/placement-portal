@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center mt-4">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Post a New Placement Drive</h4>
+            </div>
+            <div class="card-body p-4">
+                <form method="POST" action="">
+                    {{ form.hidden_tag() }}
+                    <div class="mb-3">
+                        {{ form.job_title.label(class="form-label") }}
+                        {{ form.job_title(class="form-control" + (" is-invalid" if form.job_title.errors else "")) }}
+                        {% for error in form.job_title.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.job_description.label(class="form-label") }}
+                        {{ form.job_description(class="form-control" + (" is-invalid" if form.job_description.errors
+                        else ""), rows=5) }}
+                        {% for error in form.job_description.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.eligibility.label(class="form-label") }}
+                        {{ form.eligibility(class="form-control" + (" is-invalid" if form.eligibility.errors else ""))
+                        }}
+                        {% for error in form.eligibility.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                        <small class="text-muted">E.g., B.Tech CSE with minimum 7.5 CGPA</small>
+                    </div>
+
+                    <div class="mb-4">
+                        {{ form.deadline.label(class="form-label") }}
+                        {{ form.deadline(class="form-control" + (" is-invalid" if form.deadline.errors else ""),
+                        type="date") }}
+                        {% for error in form.deadline.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        {{ form.submit(class="btn btn-primary btn-lg") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

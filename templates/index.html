@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row align-items-center mb-5 mt-5">
+    <div class="col-md-6">
+        <h1 class="display-4 fw-bold">Welcome to Placement Portal</h1>
+        <p class="lead mt-3">Your complete platform connecting talented students with top-tier companies. Discover
+            placement drives, submit applications, and kickstart your career today.</p>
+        <div class="mt-4">
+            <a href="{{ url_for('register_student') }}" class="btn btn-primary btn-lg me-2">Join as Student</a>
+            <a href="{{ url_for('register_company') }}" class="btn btn-outline-secondary btn-lg">Register Company</a>
+        </div>
+    </div>
+    <div class="col-md-6 text-center">
+        <!-- Placeholder for hero image -->
+        <div class="bg-secondary bg-opacity-10 p-5 rounded-circle d-inline-block">
+            <h1 class="display-1 text-primary">🎓</h1>
+        </div>
+    </div>
+</div>
+{% endblock %}

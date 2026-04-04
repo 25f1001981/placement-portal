@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row mb-3 mt-3">
+    <div class="col-md-6">
+        <h2>Manage Students</h2>
+    </div>
+    <div class="col-md-6">
+        <form class="d-flex" method="GET" action="{{ url_for('admin_students') }}">
+            <input class="form-control me-2" type="search" placeholder="Search by Name or Email" aria-label="Search"
+                name="search" value="{{ search }}">
+            <button class="btn btn-outline-primary" type="submit">Search</button>
+        </form>
+    </div>
+</div>
+
+<div class="table-responsive bg-white rounded shadow-sm p-3">
+    <table class="table table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>Student Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Department</th>
+                <th>CGPA</th>
+                <th>Blacklisted</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+            <tr>
+                <td>{{ student.user.name }}</td>
+                <td>{{ student.user.email }}</td>
+                <td>{{ student.phone }}</td>
+                <td>{{ student.department }}</td>
+                <td>{{ student.cgpa }}</td>
+                <td>
+                    {% if student.user.is_blacklisted %}
+                    <span class="badge bg-danger">Yes</span>
+                    {% else %}
+                    <span class="badge bg-success">No</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if student.user.is_blacklisted %}
+                    <a href="{{ url_for('toggle_blacklist', id=student.user.id) }}"
+                        class="btn btn-sm btn-secondary">Whitelist</a>
+                    {% else %}
+                    <a href="{{ url_for('toggle_blacklist', id=student.user.id) }}"
+                        class="btn btn-sm btn-dark">Blacklist</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="7" class="text-center">No students found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

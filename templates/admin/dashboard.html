@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row mb-4 mt-3">
+    <div class="col-12">
+        <h2 class="border-bottom pb-2">Admin Dashboard</h2>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3 mb-4">
+        <div class="card text-white bg-primary shadow-sm h-100">
+            <div class="card-header">Students</div>
+            <div class="card-body">
+                <h2 class="card-title">{{ stats.total_students }}</h2>
+                <p class="card-text">Total registered students.</p>
+                <a href="{{ url_for('admin_students') }}" class="btn btn-light btn-sm">View Details</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="card text-white bg-success shadow-sm h-100">
+            <div class="card-header">Companies</div>
+            <div class="card-body">
+                <h2 class="card-title">{{ stats.total_companies }}</h2>
+                <p class="card-text">Registered companies.</p>
+                <a href="{{ url_for('admin_companies') }}" class="btn btn-light btn-sm">View Details</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="card text-white bg-info shadow-sm h-100">
+            <div class="card-header">Placement Drives</div>
+            <div class="card-body">
+                <h2 class="card-title">{{ stats.total_drives }}</h2>
+                <p class="card-text">Total drives created.</p>
+                <a href="{{ url_for('admin_drives') }}" class="btn btn-light btn-sm">View Details</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="card text-white bg-warning shadow-sm h-100">
+            <div class="card-header">Applications</div>
+            <div class="card-body">
+                <h2 class="card-title text-dark">{{ stats.total_applications }}</h2>
+                <p class="card-text text-dark">Total applications submitted.</p>
+                <a href="{{ url_for('admin_applications') }}" class="btn btn-dark btn-sm">View Details</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
